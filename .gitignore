@@ -1,3 +1,17 @@
+################ vs
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
+################ python
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -121,3 +135,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+################ project
+
+#Everything,pybind11, and build files
+build/
+EverythingSDK/
+pybind11/
