@@ -18,8 +18,28 @@ std::string ws2s(const std::wstring& wstr)
 	return converterX.to_bytes(wstr);
 }
 
-std::string Py_Everything_Search(std::string searchString) {
-	const wchar_t* searchTerm = std::wstring(searchString.begin(), searchString.end()).c_str();
+inline std::wstring convert(const std::string& as)
+{
+	// deal with trivial case of empty string
+	if (as.empty())    return std::wstring();
+
+	// determine required length of new string
+	size_t reqLength = ::MultiByteToWideChar(CP_UTF8, 0, as.c_str(), (int)as.length(), 0, 0);
+
+	// construct new string of required length
+	std::wstring ret(reqLength, L'\0');
+
+	// convert old string to new string
+	::MultiByteToWideChar(CP_UTF8, 0, as.c_str(), (int)as.length(), &ret[0], (int)ret.length());
+
+	// return new string ( compiler should optimize this away )
+	return ret;
+}
+
+std::wstring Py_Everything_Search(std::string searchString) {
+	size_t searchSize = searchString.size() * 2 + 2;
+	wchar_t* searchTerm = new wchar_t[searchSize];
+	swprintf(searchTerm, searchSize, L"%S", searchString.c_str());
 	Everything_SetSearch(searchTerm);
 	bool ok = Everything_Query(true);
 	if (ok && Everything_GetNumResults() > 0) {
@@ -27,14 +47,14 @@ std::string Py_Everything_Search(std::string searchString) {
 		TCHAR buf[MAX_PATH];
 		Everything_GetResultFullPathName(0, buf, sizeof(buf) / sizeof(TCHAR));
 		const std::wstring result = std::wstring(buf);
-		return ws2s(result);
+		return result;
 	}
 	else {
-		return std::string("");
+		return L"";
 	}
 }
 
-PYBIND11_MODULE(EverythingPython, m) {
+PYBIND11_MODULE(Everything_Python, m) {
 	m.doc() = "Everything Python Bindings.";
 	m.def("TestSearch", &Py_Everything_Search, py::arg("searchTerm"));
 }
