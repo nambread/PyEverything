@@ -10,13 +10,30 @@
 
 namespace py = pybind11;
 
+struct EverythingException : std::exception {
+
+	const DWORD m_errorCode;
+	EverythingException(const DWORD& errorCode) : m_errorCode(errorCode) {}
+
+	std::string errCodeString = std::to_string(this->m_errorCode);
+	const std::string m_errorMessage = "Everything API returned error code: " + errCodeString;
+	const char* what() const noexcept { return m_errorMessage.c_str(); }
+};
+
+static inline void checkEverythingErrorCodeAndThrow(const int& errorCode) {
+	if (!errorCode) {
+		throw EverythingException(Everything_GetLastError());
+	}
+}
+
 std::wstring Py_Test_Everything_Search(const std::wstring& searchString) {
 	Everything_SetSearch(searchString.c_str());
 	int ok = Everything_Query(true);
-	if (ok && Everything_GetNumResults() > 0) {
-		Everything_GetResultPath(0);
+	checkEverythingErrorCodeAndThrow(ok);
+	if (Everything_GetNumResults() > 0) {
 		TCHAR buf[MAX_PATH];
-		Everything_GetResultFullPathName(0, buf, sizeof(buf) / sizeof(TCHAR));
+		int ok = Everything_GetResultFullPathName(0, buf, sizeof(buf) / sizeof(TCHAR));
+		checkEverythingErrorCodeAndThrow(ok);
 		const std::wstring result = std::wstring(buf);
 		return result;
 	}
