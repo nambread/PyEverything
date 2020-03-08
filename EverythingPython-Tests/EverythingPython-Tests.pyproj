@@ -5,8 +5,7 @@
     <ProjectGuid>5e791747-9c14-41df-bf09-07b4b58e3176</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>EverythingPython_Tests.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\Everything-Python\build\x64\Debug;..\venv\Scripts</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>EverythingPython-Tests</Name>

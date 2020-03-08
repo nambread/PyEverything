@@ -2,17 +2,6 @@
 import os
 import sys
 
-project_root = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
-
-pyd_path = r'Everything-Python\build\x64\Debug'
-pyd_path_resolved = os.path.join(project_root, pyd_path)
-dll_path = r'..\venv\Scripts'
-dll_path_resolved = os.path.join(project_root, dll_path)
-sys.path.append(pyd_path_resolved)
-sys.path.append(dll_path_resolved)
-
-print(f"Added to path {pyd_path_resolved}")
-
 import Everything_Python
 from Everything_Python import Query, SetSearch, GetNumResults, GetResultFullPathName
 
