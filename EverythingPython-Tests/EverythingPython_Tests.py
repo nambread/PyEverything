@@ -27,7 +27,7 @@ if __name__ == "__main__":
             SetSearch(search)
             Query(wait=True)
             numResults = GetNumResults()
-            maxResults = max(numResults, MAX_RESULTS)
+            maxResults = min(numResults, MAX_RESULTS)
             results = [GetResultFullPathName(i, 260) for i in range(maxResults)]
             print("Printing the first 30 results:")
             results = '\n'.join(results)
