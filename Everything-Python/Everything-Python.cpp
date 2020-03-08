@@ -88,6 +88,18 @@ void Py_Everything_SetSearch(const std::wstring& searchTerm) {
 	Everything_SetSearch(searchTerm.c_str());
 }
 
+void Py_Everything_SetOffset(UINT32 offset) {
+	Everything_SetOffset(offset);
+}
+
+void Py_Everything_SetMax(UINT32 maxResults) {
+	Everything_SetMax(maxResults);
+}
+
+void Py_Everything_SetSort(UINT32 sortType) {
+	Everything_SetSort(sortType);
+}
+
 void Py_Everything_Query(bool wait = true) {
 	int ok = Everything_Query(wait);
 	checkEverythingErrorCodeAndThrow(ok);
@@ -95,9 +107,61 @@ void Py_Everything_Query(bool wait = true) {
 
 PYBIND11_MODULE(Everything_Python, m) {
 	m.doc() = "Everything Python Bindings.";
+
+	//Functions
 	m.def("GetLastError", &Py_Everything_GetLastError);
 	m.def("GetNumResults", &Py_Everything_GetNumResults);
 	m.def("GetResultFullPathName", &Py_Everything_GetResultFullPathName, py::arg("index"), py::arg("max_count"));
+	m.def("SetMax", &Py_Everything_SetMax);
+	m.def("SetOffset", &Py_Everything_SetOffset);
 	m.def("SetSearch", &Py_Everything_SetSearch, py::arg("search_term"));
 	m.def("Query", &Py_Everything_Query, py::arg("wait"));
+
+	//Members
+
+	//Search request flags
+	m.attr("REQUEST_FILE_NAME") = py::int_(EVERYTHING_REQUEST_FILE_NAME);
+	m.attr("REQUEST_PATH") = py::int_(EVERYTHING_REQUEST_PATH);
+	m.attr("REQUEST_FULL_PATH_AND_FILE_NAME") = py::int_(EVERYTHING_REQUEST_FULL_PATH_AND_FILE_NAME);
+	m.attr("REQUEST_EXTENSION") = py::int_(EVERYTHING_REQUEST_EXTENSION);
+	m.attr("REQUEST_SIZE") = py::int_(EVERYTHING_REQUEST_SIZE);
+	m.attr("REQUEST_DATE_CREATED") = py::int_(EVERYTHING_REQUEST_DATE_CREATED);
+	m.attr("REQUEST_DATE_MODIFIED") = py::int_(EVERYTHING_REQUEST_DATE_MODIFIED);
+	m.attr("REQUEST_DATE_ACCESSED") = py::int_(EVERYTHING_REQUEST_DATE_ACCESSED);
+	m.attr("REQUEST_ATTRIBUTES") = py::int_(EVERYTHING_REQUEST_ATTRIBUTES);
+	m.attr("REQUEST_FILE_LIST_FILE_NAME") = py::int_(EVERYTHING_REQUEST_FILE_LIST_FILE_NAME);
+	m.attr("REQUEST_RUN_COUNT") = py::int_(EVERYTHING_REQUEST_RUN_COUNT);
+	m.attr("REQUEST_DATE_RUN") = py::int_(EVERYTHING_REQUEST_DATE_RUN);
+	m.attr("REQUEST_DATE_RECENTLY_CHANGED") = py::int_(EVERYTHING_REQUEST_DATE_RECENTLY_CHANGED);
+	m.attr("REQUEST_HIGHLIGHTED_FILE_NAME") = py::int_(EVERYTHING_REQUEST_HIGHLIGHTED_FILE_NAME);
+	m.attr("REQUEST_HIGHLIGHTED_PATH") = py::int_(EVERYTHING_REQUEST_HIGHLIGHTED_PATH);
+	m.attr("REQUEST_HIGHLIGHTED_FULL_PATH_AND_FILE_NAME") = py::int_(EVERYTHING_REQUEST_HIGHLIGHTED_FULL_PATH_AND_FILE_NAME);
+
+	//Result sort flags
+	m.attr("SORT_NAME_ASCENDING")= py::int_(EVERYTHING_SORT_NAME_ASCENDING);
+	m.attr("SORT_NAME_DESCENDING") = py::int_(EVERYTHING_SORT_NAME_DESCENDING);
+	m.attr("SORT_PATH_ASCENDING") = py::int_(EVERYTHING_SORT_PATH_ASCENDING);
+	m.attr("SORT_PATH_DESCENDING") = py::int_(EVERYTHING_SORT_PATH_DESCENDING);
+	m.attr("SORT_SIZE_ASCENDING") = py::int_(EVERYTHING_SORT_SIZE_ASCENDING);
+	m.attr("SORT_SIZE_DESCENDING") = py::int_(EVERYTHING_SORT_SIZE_DESCENDING);
+	m.attr("SORT_EXTENSION_ASCENDING") = py::int_(EVERYTHING_SORT_EXTENSION_ASCENDING);
+	m.attr("SORT_EXTENSION_DESCENDING") = py::int_(EVERYTHING_SORT_EXTENSION_DESCENDING);
+	m.attr("SORT_TYPE_NAME_ASCENDING") = py::int_(EVERYTHING_SORT_TYPE_NAME_ASCENDING);
+	m.attr("SORT_TYPE_NAME_DESCENDING") = py::int_(EVERYTHING_SORT_TYPE_NAME_DESCENDING);
+	m.attr("SORT_DATE_CREATED_ASCENDING") = py::int_(EVERYTHING_SORT_DATE_CREATED_ASCENDING);
+	m.attr("SORT_DATE_CREATED_DESCENDING") = py::int_(EVERYTHING_SORT_DATE_CREATED_DESCENDING);
+	m.attr("SORT_DATE_MODIFIED_ASCENDING") = py::int_(EVERYTHING_SORT_DATE_MODIFIED_ASCENDING);
+	m.attr("SORT_DATE_MODIFIED_DESCENDING") = py::int_(EVERYTHING_SORT_DATE_MODIFIED_DESCENDING);
+	m.attr("SORT_ATTRIBUTES_ASCENDING") = py::int_(EVERYTHING_SORT_ATTRIBUTES_ASCENDING);
+	m.attr("SORT_ATTRIBUTES_DESCENDING") = py::int_(EVERYTHING_SORT_ATTRIBUTES_DESCENDING);
+	m.attr("SORT_FILE_LIST_FILENAME_ASCENDING") = py::int_(EVERYTHING_SORT_FILE_LIST_FILENAME_ASCENDING);
+	m.attr("SORT_FILE_LIST_FILENAME_DESCENDING") = py::int_(EVERYTHING_SORT_FILE_LIST_FILENAME_DESCENDING);
+	m.attr("SORT_RUN_COUNT_ASCENDING") = py::int_(EVERYTHING_SORT_RUN_COUNT_ASCENDING);
+	m.attr("SORT_RUN_COUNT_DESCENDING") = py::int_(EVERYTHING_SORT_RUN_COUNT_DESCENDING);
+	m.attr("SORT_DATE_RECENTLY_CHANGED_ASCENDING") = py::int_(EVERYTHING_SORT_DATE_RECENTLY_CHANGED_ASCENDING);
+	m.attr("SORT_DATE_RECENTLY_CHANGED_DESCENDING") = py::int_(EVERYTHING_SORT_DATE_RECENTLY_CHANGED_DESCENDING);
+	m.attr("SORT_DATE_ACCESSED_ASCENDING") = py::int_(EVERYTHING_SORT_DATE_ACCESSED_ASCENDING);
+	m.attr("SORT_DATE_ACCESSED_DESCENDING") = py::int_(EVERYTHING_SORT_DATE_ACCESSED_DESCENDING);
+	m.attr("SORT_DATE_RUN_ASCENDING") = py::int_(EVERYTHING_SORT_DATE_RUN_ASCENDING);
+	m.attr("SORT_DATE_RUN_DESCENDING") = py::int_(EVERYTHING_SORT_DATE_RUN_DESCENDING);
 }
