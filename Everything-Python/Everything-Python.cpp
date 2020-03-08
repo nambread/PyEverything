@@ -245,23 +245,90 @@ std::wstring Py_Everything_GetResultFullPathName(DWORD index, const DWORD maxCou
 	return result;
 }
 
-DWORD	Py_Everything_GetResultListSort(void); // Everything 1.4.1
-DWORD	Py_Everything_GetResultListRequestFlags(void); // Everything 1.4.1
-LPCWSTR Py_Everything_GetResultExtension(DWORD dwIndex); // Everything 1.4.1
-BOOL	Py_Everything_GetResultSize(DWORD dwIndex); // Everything 1.4.1
-BOOL	Py_Everything_GetResultDateCreated(DWORD dwIndex); // Everything 1.4.1
-BOOL	Py_Everything_GetResultDateModified(DWORD dwIndex); // Everything 1.4.1
-BOOL	Py_Everything_GetResultDateAccessed(DWORD dwIndex); // Everything 1.4.1
-DWORD	Py_Everything_GetResultAttributes(DWORD dwIndex); // Everything 1.4.1
-LPCWSTR Py_Everything_GetResultFileListFileName(DWORD dwIndex); // Everything 1.4.1
-DWORD	Py_Everything_GetResultRunCount(DWORD dwIndex); // Everything 1.4.1
-BOOL	Py_Everything_GetResultDateRun(DWORD dwIndex);
-BOOL	Py_Everything_GetResultDateRecentlyChanged(DWORD dwIndex);
-LPCWSTR Py_Everything_GetResultHighlightedFileName(DWORD dwIndex); // Everything 1.4.1
-LPCWSTR Py_Everything_GetResultHighlightedPath(DWORD dwIndex); // Everything 1.4.1
-LPCWSTR Py_Everything_GetResultHighlightedFullPathAndFileName(DWORD dwIndex); // Everything 1.4.1
+DWORD	Py_Everything_GetResultListSort(void)
+{
+	return Everything_GetResultListSort();
+}
 
-void Py_Everything_SetSearch(const std::wstring& searchTerm) 
+DWORD	Py_Everything_GetResultListRequestFlags(void)
+{
+	return Everything_GetResultListRequestFlags();
+}
+
+std::wstring Py_Everything_GetResultExtension(DWORD index)
+{
+	auto rv = Everything_GetResultExtension(index);
+	checkEverythingErrorCodeAndThrow(rv);
+	return std::wstring(rv);
+}
+
+LARGE_INTEGER Py_Everything_GetResultSize(DWORD index)
+{
+	LARGE_INTEGER size;
+	auto ok = Everything_GetResultSize(index, &size);
+	checkEverythingErrorCodeAndThrow(ok);
+	return size;
+}
+
+FILETIME* Py_Everything_GetResultDateCreated(DWORD index)
+{
+	FILETIME* time = new FILETIME();
+	auto ok = Everything_GetResultDateCreated(index, time);
+	checkEverythingErrorCodeAndThrow(ok);
+	return time;
+}
+
+BOOL	Py_Everything_GetResultDateModified(DWORD index)
+{
+	return false;
+}
+
+BOOL	Py_Everything_GetResultDateAccessed(DWORD index)
+{
+	return false;
+}
+
+DWORD	Py_Everything_GetResultAttributes(DWORD index)
+{
+	return 0;
+}
+
+LPCWSTR Py_Everything_GetResultFileListFileName(DWORD index)
+{
+	return L"";
+}
+
+DWORD	Py_Everything_GetResultRunCount(DWORD index)
+{
+	return 0;
+}
+
+BOOL	Py_Everything_GetResultDateRun(DWORD index)
+{
+	return false;
+}
+
+BOOL	Py_Everything_GetResultDateRecentlyChanged(DWORD index)
+{
+	return false;
+}
+
+LPCWSTR Py_Everything_GetResultHighlightedFileName(DWORD index)
+{
+	return L"";
+}
+
+LPCWSTR Py_Everything_GetResultHighlightedPath(DWORD index)
+{
+	return L"";
+}
+
+LPCWSTR Py_Everything_GetResultHighlightedFullPathAndFileName(DWORD index)
+{
+	return L"";
+}
+
+void Py_Everything_SetSearch(const std::wstring& searchTerm)
 {
 	Everything_SetSearch(searchTerm.c_str());
 }
@@ -370,21 +437,21 @@ PYBIND11_MODULE(Everything_Python, m)
 	m.def("GetResultFileName", &Py_Everything_GetResultFileName, py::arg("index"));
 	m.def("GetResultPath", &Py_Everything_GetResultPath, py::arg("index"));
 	m.def("GetResultFullPathName", &Py_Everything_GetResultFullPathName, py::arg("index"), py::arg_v("max_path_length", (DWORD)MAX_PATH));
-	//m.def("GetResultListSort", &Py_Everything_GetResultListSort);
-	//m.def("GetResultListRequestFlags", &Py_Everything_GetResultListRequestFlags);
-	//m.def("GetResultExtension", &Py_Everything_GetResultExtension, py::arg("index"));
-	//m.def("GetResultSize", &Py_Everything_GetResultSize, py::arg("index"));
-	//m.def("GetResultDateCreated", &Py_Everything_GetResultDateCreated, py::arg("index"));
-	//m.def("GetResultDateModified", &Py_Everything_GetResultDateModified, py::arg("index"));
-	//m.def("GetResultDateAccessed", &Py_Everything_GetResultDateAccessed, py::arg("index"));
-	//m.def("GetResultAttributes", &Py_Everything_GetResultAttributes, py::arg("index"));
-	//m.def("GetResultFileListFileName", &Py_Everything_GetResultFileListFileName, py::arg("index"));
-	//m.def("GetResultRunCount", &Py_Everything_GetResultRunCount, py::arg("index"));
-	//m.def("GetResultDateRun", &Py_Everything_GetResultDateRun, py::arg("index"));
-	//m.def("GetResultDateRecentlyChanged", &Py_Everything_GetResultDateRecentlyChanged, py::arg("index"));
-	//m.def("GetResultHighlightedFileName", &Py_Everything_GetResultHighlightedFileName, py::arg("index"));
-	//m.def("GetResultHighlightedPath", &Py_Everything_GetResultHighlightedPath, py::arg("index"));
-	//m.def("GetResultHighlightedFullPathAndFileName", &Py_Everything_GetResultHighlightedFullPathAndFileName, py::arg("index"));
+	m.def("GetResultListSort", &Py_Everything_GetResultListSort);
+	m.def("GetResultListRequestFlags", &Py_Everything_GetResultListRequestFlags);
+	m.def("GetResultExtension", &Py_Everything_GetResultExtension, py::arg("index"));
+	m.def("GetResultSize", &Py_Everything_GetResultSize, py::arg("index"));
+	m.def("GetResultDateCreated", &Py_Everything_GetResultDateCreated, py::arg("index"));
+	m.def("GetResultDateModified", &Py_Everything_GetResultDateModified, py::arg("index"));
+	m.def("GetResultDateAccessed", &Py_Everything_GetResultDateAccessed, py::arg("index"));
+	m.def("GetResultAttributes", &Py_Everything_GetResultAttributes, py::arg("index"));
+	m.def("GetResultFileListFileName", &Py_Everything_GetResultFileListFileName, py::arg("index"));
+	m.def("GetResultRunCount", &Py_Everything_GetResultRunCount, py::arg("index"));
+	m.def("GetResultDateRun", &Py_Everything_GetResultDateRun, py::arg("index"));
+	m.def("GetResultDateRecentlyChanged", &Py_Everything_GetResultDateRecentlyChanged, py::arg("index"));
+	m.def("GetResultHighlightedFileName", &Py_Everything_GetResultHighlightedFileName, py::arg("index"));
+	m.def("GetResultHighlightedPath", &Py_Everything_GetResultHighlightedPath, py::arg("index"));
+	m.def("GetResultHighlightedFullPathAndFileName", &Py_Everything_GetResultHighlightedFullPathAndFileName, py::arg("index"));
 
 	//The big one, run the query with the current search state	
 	m.def("Query", &Py_Everything_Query, py::arg("wait"));
