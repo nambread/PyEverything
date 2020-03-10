@@ -4,9 +4,11 @@
 #include <iostream>
 #include <locale>
 #include <codecvt>
+#include <chrono>
 
 #include "Everything.h"
 #include "pybind11/pybind11.h"
+#include "pybind11/chrono.h"
 
 namespace py = pybind11;
 
@@ -21,7 +23,7 @@ struct EverythingException : std::exception
 	const DWORD m_errorCode;
 	EverythingException(const DWORD& errorCode) : m_errorCode(errorCode) {}
 
-	std::string errCodeString = std::to_string(this->m_errorCode);
+	const std::string errCodeString = std::to_string(this->m_errorCode);
 	const std::string m_errorMessage = "Everything API returned error code: " + errCodeString;
 	const char* what() const noexcept { return m_errorMessage.c_str(); }
 };
@@ -45,6 +47,19 @@ static inline void checkEverythingErrorCodeAndThrow(const T status)
 	}
 }
 
+//the system_clock::time_point conversion uses an unsafe std::localtime function. Disable the warning with _CRT_SECURE_NO_WARNINGS
+//Will implement our own FILETIME > datetime conversion function if this causes problems.
+
+static inline auto FILETIMEtoTime_Point(const FILETIME& ft) 
+{
+	time_t t;
+	ULARGE_INTEGER ull;
+	ull.LowPart = ft.dwLowDateTime;
+	ull.HighPart = ft.dwHighDateTime;
+	t = ull.QuadPart / 10000000ULL - 11644473600ULL; //https://cyberspock.com/2015/10/02/some-time_point-to-from-filetime-conversions/ something to do with clock tick resolution and epoch adjustment.
+	return std::chrono::system_clock::from_time_t(t);
+}
+
 std::wstring Py_Test_Everything_Search(const std::wstring& searchString) 
 {
 	Everything_SetSearch(searchString.c_str());
@@ -63,22 +78,6 @@ std::wstring Py_Test_Everything_Search(const std::wstring& searchString)
 		return L"";
 	}
 }
-
-/*
-EVERYTHINGUSERAPI BOOL EVERYTHINGAPI Everything_GetMatchPath(void);
-EVERYTHINGUSERAPI BOOL EVERYTHINGAPI Everything_GetMatchCase(void);
-EVERYTHINGUSERAPI BOOL EVERYTHINGAPI Everything_GetMatchWholeWord(void);
-EVERYTHINGUSERAPI BOOL EVERYTHINGAPI Everything_GetRegex(void);
-EVERYTHINGUSERAPI DWORD EVERYTHINGAPI Everything_GetMax(void);
-EVERYTHINGUSERAPI DWORD EVERYTHINGAPI Everything_GetOffset(void);
-EVERYTHINGUSERAPI LPCSTR EVERYTHINGAPI Everything_GetSearchA(void);
-EVERYTHINGUSERAPI LPCWSTR EVERYTHINGAPI Everything_GetSearchW(void);
-EVERYTHINGUSERAPI DWORD EVERYTHINGAPI Everything_GetLastError(void);
-EVERYTHINGUSERAPI HWND EVERYTHINGAPI Everything_GetReplyWindow(void);
-EVERYTHINGUSERAPI DWORD EVERYTHINGAPI Everything_GetReplyID(void);
-EVERYTHINGUSERAPI DWORD EVERYTHINGAPI Everything_GetSort(void); // Everything 1.4.1
-EVERYTHINGUSERAPI DWORD EVERYTHINGAPI Everything_GetRequestFlags(void); // Everything 1.4.1
-*/
 
 void Py_Everything_Cleanup() 
 {
@@ -139,7 +138,7 @@ DWORD Py_Everything_GetReplyID()
 
 DWORD Py_Everything_GetSort()
 {
-	return Everything_GetReplyID();
+	return Everything_GetSort();
 }
 
 DWORD Py_Everything_GetRequestFlags()
@@ -270,62 +269,86 @@ LARGE_INTEGER Py_Everything_GetResultSize(DWORD index)
 	return size;
 }
 
-FILETIME* Py_Everything_GetResultDateCreated(DWORD index)
+auto Py_Everything_GetResultDateCreated(DWORD index)
 {
-	FILETIME* time = new FILETIME();
-	auto ok = Everything_GetResultDateCreated(index, time);
+	FILETIME time;
+	auto ok = Everything_GetResultDateCreated(index, &time);
 	checkEverythingErrorCodeAndThrow(ok);
-	return time;
+	return FILETIMEtoTime_Point(time);
 }
 
-BOOL	Py_Everything_GetResultDateModified(DWORD index)
+auto Py_Everything_GetResultDateModified(DWORD index)
 {
-	return false;
+	FILETIME time;
+	auto ok = Everything_GetResultDateModified(index, &time);
+	checkEverythingErrorCodeAndThrow(ok);
+	return FILETIMEtoTime_Point(time);
 }
 
-BOOL	Py_Everything_GetResultDateAccessed(DWORD index)
+auto Py_Everything_GetResultDateAccessed(DWORD index)
 {
-	return false;
+	FILETIME time;
+	auto ok = Everything_GetResultDateAccessed(index, &time);
+	checkEverythingErrorCodeAndThrow(ok);
+	return FILETIMEtoTime_Point(time);
 }
 
 DWORD	Py_Everything_GetResultAttributes(DWORD index)
 {
-	return 0;
+	auto rv = Everything_GetResultAttributes(index);
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
 }
 
-LPCWSTR Py_Everything_GetResultFileListFileName(DWORD index)
+std::wstring Py_Everything_GetResultFileListFileName(DWORD index)
 {
-	return L"";
+	auto rv = Everything_GetResultFileListFileName(index);
+	checkEverythingErrorCodeAndThrow(rv);
+	return std::wstring(rv);
 }
 
 DWORD	Py_Everything_GetResultRunCount(DWORD index)
 {
-	return 0;
+	auto rv = Everything_GetResultRunCount(index);
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
 }
 
-BOOL	Py_Everything_GetResultDateRun(DWORD index)
+auto Py_Everything_GetResultDateRun(DWORD index)
 {
-	return false;
+	FILETIME time;
+	auto ok = Everything_GetResultDateRun(index, &time);
+	checkEverythingErrorCodeAndThrow(ok);
+	return FILETIMEtoTime_Point(time);
 }
 
-BOOL	Py_Everything_GetResultDateRecentlyChanged(DWORD index)
+auto Py_Everything_GetResultDateRecentlyChanged(DWORD index)
 {
-	return false;
+	FILETIME time;
+	auto ok = Everything_GetResultDateRecentlyChanged(index, &time);
+	checkEverythingErrorCodeAndThrow(ok);
+	return FILETIMEtoTime_Point(time);
 }
 
-LPCWSTR Py_Everything_GetResultHighlightedFileName(DWORD index)
+std::wstring Py_Everything_GetResultHighlightedFileName(DWORD index)
 {
-	return L"";
+	auto rv = Everything_GetResultHighlightedFileName(index);
+	checkEverythingErrorCodeAndThrow(rv);
+	return std::wstring(rv);
 }
 
-LPCWSTR Py_Everything_GetResultHighlightedPath(DWORD index)
+std::wstring Py_Everything_GetResultHighlightedPath(DWORD index)
 {
-	return L"";
+	auto rv = Everything_GetResultHighlightedPath(index);
+	checkEverythingErrorCodeAndThrow(rv);
+	return std::wstring(rv);
 }
 
-LPCWSTR Py_Everything_GetResultHighlightedFullPathAndFileName(DWORD index)
+std::wstring Py_Everything_GetResultHighlightedFullPathAndFileName(DWORD index)
 {
-	return L"";
+	auto rv = Everything_GetResultHighlightedFullPathAndFileName(index);
+	checkEverythingErrorCodeAndThrow(rv);
+	return std::wstring(rv);
 }
 
 void Py_Everything_SetSearch(const std::wstring& searchTerm)
@@ -454,7 +477,7 @@ PYBIND11_MODULE(Everything_Python, m)
 	m.def("GetResultHighlightedFullPathAndFileName", &Py_Everything_GetResultHighlightedFullPathAndFileName, py::arg("index"));
 
 	//The big one, run the query with the current search state	
-	m.def("Query", &Py_Everything_Query, py::arg("wait"));
+	m.def("Query", &Py_Everything_Query, py::arg_v("wait", true));
 
 	//Members
 
