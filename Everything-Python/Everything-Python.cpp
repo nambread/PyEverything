@@ -412,6 +412,126 @@ void Py_Everything_Query(bool wait = true)
 	checkEverythingErrorCodeAndThrow(ok);
 }
 
+DWORD Py_Everything_GetMajorVersion(void)
+{
+	auto rv = Everything_GetMajorVersion();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+DWORD Py_Everything_GetMinorVersion(void)
+{
+	auto rv = Everything_GetMinorVersion();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+DWORD Py_Everything_GetRevision(void)
+{
+	auto rv = Everything_GetRevision();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+DWORD Py_Everything_GetBuildNumber(void)
+{
+	auto rv = Everything_GetBuildNumber();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_Exit(void)
+{
+	auto rv = Everything_Exit();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_IsDBLoaded(void)
+{
+	auto rv = Everything_IsDBLoaded();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_IsAdmin(void)
+{
+	auto rv = Everything_IsAdmin();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_IsAppData(void)
+{
+	auto rv = Everything_IsAppData();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_RebuildDB(void)
+{
+	auto rv = Everything_RebuildDB();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_UpdateAllFolderIndexes(void)
+{
+	auto rv = Everything_RebuildDB();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_SaveDB(void)
+{
+	auto rv = Everything_SaveDB();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_SaveRunHistory(void)
+{
+	auto rv = Everything_SaveRunHistory();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL Py_Everything_DeleteRunHistory(void)
+{
+	auto rv = Everything_DeleteRunHistory();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+DWORD Py_Everything_GetTargetMachine(void)
+{
+	auto rv = Everything_GetTargetMachine();
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+DWORD Py_Everything_GetRunCountFromFileName(const std::wstring fileName)
+{
+	auto rv = Everything_GetRunCountFromFileName(fileName.c_str());
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+BOOL  Py_Everything_SetRunCountFromFileName(const std::wstring fileName, DWORD runCount)
+{
+	auto rv = Everything_SetRunCountFromFileName(fileName.c_str(), runCount);
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+DWORD Py_Everything_IncRunCountFromFileName(const std::wstring fileName)
+{
+	auto rv = Everything_IncRunCountFromFileName(fileName.c_str());
+	checkEverythingErrorCodeAndThrow(rv);
+	return rv;
+}
+
+
 PYBIND11_MODULE(Everything_Python, m) 
 {
 	m.doc() = "Everything Python Bindings.";
@@ -448,6 +568,7 @@ PYBIND11_MODULE(Everything_Python, m)
 	m.def("IsQueryReply", &Py_Everything_IsQueryReply, py::arg("message"), py::arg("wparam"), py::arg("lparam"), py::arg("dwID"));
 	m.def("SortResultsByPath", &Py_Everything_SortResultsByPath); // might actually be deprecated in favour of Everything_SetSort, need to check.
 	
+	//reading query results
 	m.def("GetNumFileResults", &Py_Everything_GetNumFileResults);
 	m.def("GetNumFolderResults", &Py_Everything_GetNumFolderResults);
 	m.def("GetNumResults", &Py_Everything_GetNumResults);
@@ -478,6 +599,29 @@ PYBIND11_MODULE(Everything_Python, m)
 
 	//The big one, run the query with the current search state	
 	m.def("Query", &Py_Everything_Query, py::arg_v("wait", true));
+
+	m.def("Reset", &Everything_Reset);
+	m.def("CleanUp", &Everything_CleanUp);
+
+	m.def("GetMajorVersion", &Py_Everything_GetMajorVersion);
+	m.def("GetMinorVersion", &Py_Everything_GetMinorVersion);
+	m.def("GetRevision", &Py_Everything_GetRevision);
+	m.def("GetBuildNumber", &Py_Everything_GetBuildNumber);
+	m.def("Exit", &Py_Everything_Exit);
+	m.def("IsDBLoaded", &Py_Everything_IsDBLoaded);
+	m.def("IsAdmin", &Py_Everything_IsAdmin);
+	m.def("IsAppData", &Py_Everything_IsAppData);
+	m.def("RebuildDB", &Py_Everything_RebuildDB);
+	m.def("UpdateAllFolderIndexes", &Py_Everything_UpdateAllFolderIndexes);
+	m.def("SaveDB", &Py_Everything_SaveDB);
+	m.def("SaveRunHistory", &Py_Everything_SaveRunHistory);
+	m.def("DeleteRunHistory", &Py_Everything_DeleteRunHistory);
+	m.def("GetTargetMachine", &Py_Everything_GetTargetMachine);
+
+	//whatever run counts are, manipulate them here.
+	m.def("GetRunCountFromFileName", &Py_Everything_GetRunCountFromFileName, py::arg("filepath"));
+	m.def("SetRunCountFromFileName", &Py_Everything_SetRunCountFromFileName, py::arg("filepath"), py::arg("runCount"));
+	m.def("IncRunCountFromFileName", &Py_Everything_IncRunCountFromFileName, py::arg("filepath"));
 
 	//Members
 
@@ -538,4 +682,11 @@ PYBIND11_MODULE(Everything_Python, m)
 	m.attr("SORT_DATE_ACCESSED_DESCENDING") = py::int_(EVERYTHING_SORT_DATE_ACCESSED_DESCENDING);
 	m.attr("SORT_DATE_RUN_ASCENDING") = py::int_(EVERYTHING_SORT_DATE_RUN_ASCENDING);
 	m.attr("SORT_DATE_RUN_DESCENDING") = py::int_(EVERYTHING_SORT_DATE_RUN_DESCENDING);
+
+	//Target Machine flags
+
+	m.attr("TARGET_MACHINE_X86") = py::int_(EVERYTHING_TARGET_MACHINE_X86);
+	m.attr("TARGET_MACHINE_X64") = py::int_(EVERYTHING_TARGET_MACHINE_X64);
+	m.attr("TARGET_MACHINE_ARM") = py::int_(EVERYTHING_TARGET_MACHINE_ARM);
+
 }
