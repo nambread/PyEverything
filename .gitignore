@@ -148,8 +148,10 @@ pybind11/
 ############### c++
 
 #build objects
-.obj
-.pdb
+*.obj
+*.pdb
+*.dll
 
 #vs upgrade logs
 UpgradeLog.htm
+
