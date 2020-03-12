@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>8701e522-1186-4801-9557-2fb13b905e2c</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>setup.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>..\_Everything_Python\build\x64\Debug</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -28,7 +29,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="__init__.py" />
-    <Compile Include="setup.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
