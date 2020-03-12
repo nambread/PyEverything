@@ -6,7 +6,7 @@
     <ProjectHome>.</ProjectHome>
     <StartupFile>
     </StartupFile>
-    <SearchPath>..\_Everything_Python\build\x64\Debug</SearchPath>
+    <SearchPath>_Everything_Python\build\x64\Debug</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>Everything_Python_Build</Name>
@@ -28,9 +28,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="__init__.py" />
-  </ItemGroup>
-  <ItemGroup>
     <Interpreter Include="env\">
       <Id>env</Id>
       <Version>3.7</Version>
@@ -40,6 +37,24 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Everything_Python\__init__.py" />
+    <Compile Include="setup.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Everything_Python\" />
+    <Folder Include="Everything_Python\Everything_Python.egg-info\" />
+    <Folder Include="Everything_Python\__pycache__\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Everything_Python\Everything32.dll" />
+    <Content Include="Everything_Python\Everything64.dll" />
+    <Content Include="Everything_Python\Everything_Python.egg-info\dependency_links.txt" />
+    <Content Include="Everything_Python\Everything_Python.egg-info\PKG-INFO" />
+    <Content Include="Everything_Python\Everything_Python.egg-info\SOURCES.txt" />
+    <Content Include="Everything_Python\Everything_Python.egg-info\top_level.txt" />
+    <Content Include="Everything_Python\__pycache__\__init__.cpython-37.pyc" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
