@@ -139,12 +139,17 @@ dmypy.json
 ################ project
 
 #Everything,pybind11, and build files
-_Everything-Python/[Bb]uild/
-_Everything-Python/[Tt]emp/
+_Everything_Python/[Bb]uild/
+_Everything_Python/[Tt]emp/
+_Everything_Python/[Dd]ebug/
 EverythingSDK/
 pybind11/
 
 ############### c++
 
+#build objects
 .obj
 .pdb
+
+#vs upgrade logs
+UpgradeLog.htm
