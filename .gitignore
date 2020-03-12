@@ -139,7 +139,12 @@ dmypy.json
 ################ project
 
 #Everything,pybind11, and build files
-Everything-Python/build/
-Everything-Python/temp/
+_Everything-Python/[Bb]uild/
+_Everything-Python/[Tt]emp/
 EverythingSDK/
 pybind11/
+
+############### c++
+
+.obj
+.pdb
