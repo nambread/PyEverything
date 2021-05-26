@@ -142,8 +142,6 @@ dmypy.json
 _Everything_Python/[Bb]uild/
 _Everything_Python/[Tt]emp/
 _Everything_Python/[Dd]ebug/
-EverythingSDK/
-pybind11/
 
 ############### c++
 
