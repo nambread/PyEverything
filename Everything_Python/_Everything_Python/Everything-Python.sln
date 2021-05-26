@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Everything_Python", "_Everything_Python.vcxproj", "{88AA8655-C6EF-4C62-A830-311B8FF08EF4}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Everything_Python_Package", "..\Everything_Python_Package.pyproj", "{8701E522-1186-4801-9557-2FB13B905E2C}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Everything_Python_Package", "..\..\Everything_Python_Package.pyproj", "{8701E522-1186-4801-9557-2FB13B905E2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
