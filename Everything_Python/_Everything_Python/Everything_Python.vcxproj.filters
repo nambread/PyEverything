@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Everything-Python.cpp">
+    <ClCompile Include="Everything_Python.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
