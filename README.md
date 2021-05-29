@@ -50,7 +50,7 @@ For example, on [https://www.voidtools.com/support/everything/sdk/everything_get
   
     // Get the full path and file name of the first visible result.  
     Everything_GetResultFullPathName(0,buf,sizeof(buf) / sizeof(TCHAR));
-In Everything_Python, this will simply be a returned piece of data:
+In Everything_Python, this will be a returned string:
 
     #set the search text to abc AND 123  
     Everything_Python.SetSearch("abc 123")
@@ -84,24 +84,26 @@ In Python, this is instead a **RuntimeError**:
     RuntimeError: Everything API returned error code: 2
 The numerical value of the exception is the same as on the above GetLastError page.
 
+I would like to create specific Everything_Python exceptions in future for easier exception handling.
+
 #### Namespaces
 C lacks namespaces, so all Everything SDK methods and variables have the "Everything_" prefix.
 the "Everything_Python" package is already a namespace, so this prefix has been dropped everywhere that it appears. Keyboard switches are expensive, you shouldn't wear them out!
 
 # Building from Source
 
-Building from source is done via python and setuptools. The extension module is created with pybind11, a super easy to use library that lets user wrap complex C code and expose it in a .pyd file.
+Building from source is done via python and setuptools. The extension module is created with pybind11, a super easy to use library that lets users wrap complex C code and expose it in a .pyd file.
 ### dependencies
 
- - Pybind11 : https://github.com/pybind/pybind11
- - Everything SDK : [https://www.voidtools.com/support/everything/sdk/](https://www.voidtools.com/support/everything/sdk/)
+ - Pybind11 (included in repo) : https://github.com/pybind/pybind11 
+ - Everything SDK (included in repo) : [https://www.voidtools.com/support/everything/sdk/](https://www.voidtools.com/support/everything/sdk/) 
  - Python 3.7 64 bit environment
+ - wheel from pypi: **pip install wheel**
  - VS 2015 build tools or later (Dependent on Python version)
 
 ### Instructions
-1. Download this repo somewhere local
-2. Download the pybind11 repo into the root folder of this one, so that the path .\pybind11\include is valid and points to the header files.
-3. Download and extract the Everything SDK to the root folder of this repo, to a folder called "EverythingSDK" such that .\EverythingSDK\include points to the header files, and .\EverythingSDK\lib points to the libs
-4. Copy .\EverythingSDK\dll\Everything64.dll to the .\Everything_Python\Everything_Python folder
-5. CD to the root repo folder and run **python setup.py bdist_wheel**
-6. You should get a wheel of your python version put in the newly created .\dist folder.
+1. Clone this repo.
+2. Activate your virtual environment of choice.
+3. CD to the root repo folder and run **python setup.py bdist_wheel**
+4. You should get a wheel for your python version put in the newly created .\dist folder.
+5. **pip install path/to/wheel.whl**
