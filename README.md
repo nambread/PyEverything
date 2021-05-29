@@ -8,13 +8,23 @@ Everything-Python is exactly what the name suggests: Python bindings for the C f
  
 ### Requirements
  1. Python 3.7 64-bit or later.
- 2. Everything Service installed https://www.voidtools.com/
+ 2. Windows
+ 3. Everything Service installed https://www.voidtools.com/
 
 ### Installation 
-Download the latest revision from the releases page for your version of python
-Run
+The packages are not yet on pypi. To download the latest version:
 
-    pip install path-to-the-.whl
+ 1. Go to the releases section
+ 2. Download the .zip for your version of python (3.7, 3.8, and 3.9 provided)
+ 3. Extract the .whl
+ 4. run `pip install path/to/your/wheel.whl`
+
+If there is not a wheel for your version of python, you can run
+
+    pip install git+https://github.com/nambread/Everything_Python
+
+and the package will attempt to build from source. Ensure you have an MSVC compiler set up to match your version of python.
+For more information on that, [check out this page](https://wiki.python.org/moin/WindowsCompilers)
 
 ## Usage
 Basic API usages involves three main phases:

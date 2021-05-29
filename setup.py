@@ -1,6 +1,5 @@
 from setuptools import setup, Extension, find_packages
 import os
-import shutil
 
 desc = '''
     Search Everything SDK, but in python!
@@ -28,5 +27,7 @@ setup(
         license='MIT',
         url='https://github.com/nambread/Everything_Python',
         packages=['Everything_Python'],
-        ext_modules = [pyd_ext]
+        ext_modules = [pyd_ext],
+        python_requires = '>=3.7,<3.10',
+        platforms = ['windows']
     )
