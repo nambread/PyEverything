@@ -18,17 +18,15 @@ pyd_ext = Extension('Everything_Python._Everything_Python',
                     library_dirs=[],
                     libraries=[])
 
-try:
-    setup(
-            name='Everything_Python',
-            description='Search Everything SDK, but in python!',
-            version = '0.1',
-            author='Michael Nam',
-            author_email='michael.nam@namination.co.uk',
-            license='MIT',
-            url='https://github.com/nambread/Everything_Python',
-            packages=['Everything_Python'],
-            ext_modules = [pyd_ext]
-        )
-finally:
-   pass
+
+setup(
+        name='Everything_Python',
+        description='Search Everything SDK, but in python!',
+        version = '0.2',
+        author='Michael Nam',
+        author_email='michael.nam@namination.co.uk',
+        license='MIT',
+        url='https://github.com/nambread/Everything_Python',
+        packages=['Everything_Python'],
+        ext_modules = [pyd_ext]
+    )
