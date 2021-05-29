@@ -7,7 +7,7 @@ desc = '''
     '''
 
 pyd_ext = Extension('Everything_Python._Everything_Python', 
-                    ['Everything_Python/_Everything_Python/Everything-Python.cpp',
+                    ['Everything_Python/_Everything_Python/Everything_Python.cpp',
                      'Everything_Python/_Everything_Python/vendor/Everything-SDK/src/Everything.c'],
                     include_dirs=[
                         'pybind11/include', 
