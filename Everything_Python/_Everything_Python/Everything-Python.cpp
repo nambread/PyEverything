@@ -10,6 +10,10 @@
 #include "pybind11/pybind11.h"
 #include "pybind11/chrono.h"
 
+#ifdef _MSC_VER
+	#pragma comment(lib, "user32")
+#endif
+
 namespace py = pybind11;
 
 /*
