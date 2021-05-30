@@ -21,13 +21,14 @@ pyd_ext = Extension('PyEverything._PyEverything',
 setup(
         name='PyEverything',
         description='Search Everything SDK, but in python!',
-        version = '0.3.1',
+        version = '0.3.2',
         author='Michael Nam',
         author_email='michael.nam@namination.co.uk',
         license='MIT',
         url='https://github.com/nambread/PyEverything',
         packages=['PyEverything'],
         ext_modules = [pyd_ext],
+        package_data={'PyEverything': ['_PyEverything.pyi']},
         python_requires = '>=3.7,<3.10',
         platforms = ['windows']
     )
