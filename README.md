@@ -21,7 +21,7 @@ The packages are not yet on pypi. To download the latest version:
 
 If there is not a wheel for your version of python, you can run
 
-    pip install git+https://github.com/nambread/Everything_Python
+    pip install git+https://github.com/nambread/Everything_Python@v0.2
 
 and the package will attempt to build from source. Ensure you have an MSVC compiler set up to match your version of python.
 For more information on that, [check out this page](https://wiki.python.org/moin/WindowsCompilers)
@@ -84,7 +84,7 @@ For example, on [https://www.voidtools.com/support/everything/sdk/everything_get
 		    // IPC not available.  
 	    }  
     }
-In Python, this is instead a **RuntimeError**:
+In Python, this is instead a `RuntimeError`:
     
     >>> import Everything_Python
     >>> Everything_Python.SetSearch("abc 123")
@@ -108,12 +108,13 @@ Building from source is done via python and setuptools. The extension module is 
  - Pybind11 (included in repo) : https://github.com/pybind/pybind11 
  - Everything SDK (included in repo) : [https://www.voidtools.com/support/everything/sdk/](https://www.voidtools.com/support/everything/sdk/) 
  - Python 3.7 64 bit environment
- - wheel from pypi: **pip install wheel**
+ - wheel from pypi: `pip install wheel`
  - VS 2015 build tools or later (Dependent on Python version)
 
 ### Instructions
-1. Clone this repo.
+1. Clone this repo and initialise submodules:
+    * `git clone --recurse-submodules https://github.com/nambread/Everything_Python`
 2. Activate your virtual environment of choice.
-3. CD to the root repo folder and run **python setup.py bdist_wheel**
+3. CD to the root repo folder and run `python setup.py bdist_wheel`
 4. You should get a wheel for your python version put in the newly created .\dist folder.
-5. **pip install path/to/wheel.whl**
+5. `pip install path/to/wheel.whl`
