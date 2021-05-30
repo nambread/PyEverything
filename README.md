@@ -4,7 +4,7 @@
 Everything is a windows-based program that lets a user index and very quickly search on the order of millions of files.
 There is an SDK for the program, which is written in C.
  
-Everything-Python is exactly what the name suggests: Python bindings for the C functionality so that python scripters can leverage this extremely powerful service.
+PyEverything is exactly what the name suggests: Python bindings for the C functionality so that python scripters can leverage this extremely powerful service.
  
 ### Requirements
  1. Python 3.7 64-bit or later.
@@ -20,7 +20,7 @@ The packages are not yet on pypi. To download the latest version:
 
 If there is not a wheel for your version of python, you can run
 
-    pip install git+https://github.com/nambread/PyEverything@v0.2#egg=PyEverything
+    pip install git+https://github.com/nambread/PyEverything@v0.3#egg=PyEverything
 
 and the package will attempt to build from source. Ensure you have an MSVC compiler set up to match your version of python.
 For more information on that, [check out this page](https://wiki.python.org/moin/WindowsCompilers)
@@ -71,7 +71,7 @@ In PyEverything, this will be a returned string:
     result = PyEverything.GetResultFullPathName(0)
 
 #### Error Handling
-A large portion of the C API returns error codes, which the user must handle
+A large portion of the C API returns error codes, which the user must handle.
 For example, on [https://www.voidtools.com/support/everything/sdk/everything_getlasterror/](https://www.voidtools.com/support/everything/sdk/everything_getlasterror/)
 
     // execute the query  
