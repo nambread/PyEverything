@@ -25,7 +25,7 @@ setup(
         author='Michael Nam',
         author_email='michael.nam@namination.co.uk',
         license='MIT',
-        url='https://github.com/nambread/Everything_Python',
+        url='https://github.com/nambread/PyEverything',
         packages=['PyEverything'],
         ext_modules = [pyd_ext],
         python_requires = '>=3.7,<3.10',

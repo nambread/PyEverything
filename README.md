@@ -1,4 +1,4 @@
-# Everything_Python
+# PyEverything
  Python bindings for the Everything Service API
  
 Everything is a windows-based program that lets a user index and very quickly search on the order of millions of files.
@@ -21,7 +21,7 @@ The packages are not yet on pypi. To download the latest version:
 
 If there is not a wheel for your version of python, you can run
 
-    pip install git+https://github.com/nambread/Everything_Python@v0.2
+    pip install git+https://github.com/nambread/PyEverything@v0.2#egg=PyEverything
 
 and the package will attempt to build from source. Ensure you have an MSVC compiler set up to match your version of python.
 For more information on that, [check out this page](https://wiki.python.org/moin/WindowsCompilers)
@@ -33,12 +33,12 @@ Basic API usages involves three main phases:
 3. Iterate over the resulting data
 ### example
 
-    import Everything_Python
+    import PyEverything
 
-    Everything_Python.SetSearch("example")
-    Everything_Python.Query()
-    for i in Everything_Python.GetNumResults():
-        print(Everything_Python.GetResultFullPathName(i))
+    PyEverything.SetSearch("example")
+    PyEverything.Query()
+    for i in PyEverything.GetNumResults():
+        print(PyEverything.GetResultFullPathName(i))
         #results will get printed out here.
 
 The full Everything SDK is here:   [https://www.voidtools.com/support/everything/sdk/](https://www.voidtools.com/support/everything/sdk/)
@@ -60,16 +60,16 @@ For example, on [https://www.voidtools.com/support/everything/sdk/everything_get
   
     // Get the full path and file name of the first visible result.  
     Everything_GetResultFullPathName(0,buf,sizeof(buf) / sizeof(TCHAR));
-In Everything_Python, this will be a returned string:
+In PyEverything, this will be a returned string:
 
     #set the search text to abc AND 123  
-    Everything_Python.SetSearch("abc 123")
+    PyEverything.SetSearch("abc 123")
     
     #execute the query  
-    Everything_Python.Query(True)
+    PyEverything.Query(True)
     
     #Get the full path and file name of the first visible result.  
-    result = Everything_Python.GetResultFullPathName(0)
+    result = PyEverything.GetResultFullPathName(0)
 
 #### Error Handling
 A large portion of the C API returns error codes, which the user must handle
@@ -86,19 +86,19 @@ For example, on [https://www.voidtools.com/support/everything/sdk/everything_get
     }
 In Python, this is instead a `RuntimeError`:
     
-    >>> import Everything_Python
-    >>> Everything_Python.SetSearch("abc 123")
-    >>> Everything_Python.Query() #Raises Everything_Python.ERROR_IPC
+    >>> import PyEverything
+    >>> PyEverything.SetSearch("abc 123")
+    >>> PyEverything.Query() #Raises PyEverything.ERROR_IPC
     Traceback (most recent call last):
     File "<stdin>", line 1, in <module>
     RuntimeError: Everything API returned error code: 2
 The numerical value of the exception is the same as on the above GetLastError page.
 
-I would like to create specific Everything_Python exceptions in future for easier exception handling.
+I would like to create specific PyEverything exceptions in future for easier exception handling.
 
 #### Namespaces
 C lacks namespaces, so all Everything SDK methods and variables have the "Everything_" prefix.
-the "Everything_Python" package is already a namespace, so this prefix has been dropped everywhere that it appears. Keyboard switches are expensive, you shouldn't wear them out!
+the "PyEverything" package is already a namespace, so this prefix has been dropped everywhere that it appears. Keyboard switches are expensive, you shouldn't wear them out!
 
 # Building from Source
 
@@ -113,7 +113,7 @@ Building from source is done via python and setuptools. The extension module is 
 
 ### Instructions
 1. Clone this repo and initialise submodules:
-    * `git clone --recurse-submodules https://github.com/nambread/Everything_Python`
+    * `git clone --recurse-submodules https://github.com/nambread/PyEverything`
 2. Activate your virtual environment of choice.
 3. CD to the root repo folder and run `python setup.py bdist_wheel`
 4. You should get a wheel for your python version put in the newly created .\dist folder.
