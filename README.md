@@ -15,9 +15,8 @@ Everything-Python is exactly what the name suggests: Python bindings for the C f
 The packages are not yet on pypi. To download the latest version:
 
  1. Go to the releases section
- 2. Download the .zip for your version of python (3.7, 3.8, and 3.9 provided)
- 3. Extract the .whl
- 4. run `pip install path/to/your/wheel.whl`
+ 2. Download the .whl for your version of python (3.7, 3.8, and 3.9 provided)
+ 3. run `pip install path/to/your/wheel.whl`
 
 If there is not a wheel for your version of python, you can run
 
