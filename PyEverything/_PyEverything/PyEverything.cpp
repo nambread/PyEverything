@@ -536,7 +536,7 @@ DWORD Py_Everything_IncRunCountFromFileName(const std::wstring fileName)
 }
 
 
-PYBIND11_MODULE(_Everything_Python, m) 
+PYBIND11_MODULE(_PyEverything, m) 
 {
 	m.doc() = "Everything Python Bindings.";
 
