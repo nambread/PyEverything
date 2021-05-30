@@ -9,7 +9,7 @@ PyEverything is exactly what the name suggests: Python bindings for the C functi
 ### Requirements
  1. Python 3.7 64-bit or later.
  2. Windows
- 3. Everything Service installed https://www.voidtools.com/
+ 3. Everything Service 1.4.1+ installed https://www.voidtools.com/
 
 ### Installation 
 The packages are not yet on pypi. To download the latest version:
