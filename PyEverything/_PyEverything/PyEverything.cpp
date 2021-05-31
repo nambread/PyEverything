@@ -56,7 +56,7 @@ static inline void checkEverythingErrorCodeAndThrow(const T status)
 
 static py::object FILETIMEtoPyObject(const FILETIME& ft) 
 {
-	const time_t t;
+	time_t t;
 	ULARGE_INTEGER ull;
 	ull.LowPart = ft.dwLowDateTime;
 	ull.HighPart = ft.dwHighDateTime;
