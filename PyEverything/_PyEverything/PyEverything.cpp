@@ -1,6 +1,10 @@
 // Everything-Python.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+#ifdef _MSC_VER
+	#pragma comment(lib, "user32")
+#endif
+
 #include <iostream>
 #include <locale>
 #include <codecvt>
@@ -9,10 +13,6 @@
 #include "Everything.h"
 #include "pybind11/pybind11.h"
 #include "pybind11/chrono.h"
-
-#ifdef _MSC_VER
-	#pragma comment(lib, "user32")
-#endif
 
 namespace py = pybind11;
 
@@ -54,32 +54,21 @@ static inline void checkEverythingErrorCodeAndThrow(const T status)
 //the system_clock::time_point conversion uses an unsafe std::localtime function. Disable the warning with _CRT_SECURE_NO_WARNINGS
 //Will implement our own FILETIME > datetime conversion function if this causes problems.
 
-static inline auto FILETIMEtoTime_Point(const FILETIME& ft) 
+static py::object FILETIMEtoPyObject(const FILETIME& ft) 
 {
-	time_t t;
+	const time_t t;
 	ULARGE_INTEGER ull;
 	ull.LowPart = ft.dwLowDateTime;
 	ull.HighPart = ft.dwHighDateTime;
-	t = ull.QuadPart / 10000000ULL - 11644473600ULL; //https://cyberspock.com/2015/10/02/some-time_point-to-from-filetime-conversions/ something to do with clock tick resolution and epoch adjustment.
-	return std::chrono::system_clock::from_time_t(t);
-}
-
-std::wstring Py_Test_Everything_Search(const std::wstring& searchString) 
-{
-	Everything_SetSearch(searchString.c_str());
-	int ok = Everything_Query(true);
-	checkEverythingErrorCodeAndThrow(ok);
-	if (Everything_GetNumResults() > 0) 
-	{
-		TCHAR buf[MAX_PATH];
-		int ok = Everything_GetResultFullPathName(0, buf, sizeof(buf) / sizeof(TCHAR));
-		checkEverythingErrorCodeAndThrow(ok);
-		const std::wstring result = std::wstring(buf);
-		return result;
-	}
+	if (ull.QuadPart < 0x8000000000000000) //Max valid FILETIME for FileTimeToSystemTime() https://docs.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime#parameters
+	{ 
+		t = ull.QuadPart / 10000000ULL - 11644473600ULL; //https://cyberspock.com/2015/10/02/some-time_point-to-from-filetime-conversions/ something to do with clock tick resolution and epoch adjustment. Probably not portable.
+		std::chrono::system_clock::time_point FILETIMEToTimepoint = std::chrono::system_clock::from_time_t(t);
+		return py::cast(FILETIMEToTimepoint);
+	} 
 	else 
 	{
-		return L"";
+		return py::none();
 	}
 }
 
@@ -278,7 +267,7 @@ auto Py_Everything_GetResultDateCreated(DWORD index)
 	FILETIME time;
 	auto ok = Everything_GetResultDateCreated(index, &time);
 	checkEverythingErrorCodeAndThrow(ok);
-	return FILETIMEtoTime_Point(time);
+	return FILETIMEtoPyObject(time);
 }
 
 auto Py_Everything_GetResultDateModified(DWORD index)
@@ -286,7 +275,7 @@ auto Py_Everything_GetResultDateModified(DWORD index)
 	FILETIME time;
 	auto ok = Everything_GetResultDateModified(index, &time);
 	checkEverythingErrorCodeAndThrow(ok);
-	return FILETIMEtoTime_Point(time);
+	return FILETIMEtoPyObject(time);
 }
 
 auto Py_Everything_GetResultDateAccessed(DWORD index)
@@ -294,7 +283,7 @@ auto Py_Everything_GetResultDateAccessed(DWORD index)
 	FILETIME time;
 	auto ok = Everything_GetResultDateAccessed(index, &time);
 	checkEverythingErrorCodeAndThrow(ok);
-	return FILETIMEtoTime_Point(time);
+	return FILETIMEtoPyObject(time);
 }
 
 DWORD	Py_Everything_GetResultAttributes(DWORD index)
@@ -323,7 +312,7 @@ auto Py_Everything_GetResultDateRun(DWORD index)
 	FILETIME time;
 	auto ok = Everything_GetResultDateRun(index, &time);
 	checkEverythingErrorCodeAndThrow(ok);
-	return FILETIMEtoTime_Point(time);
+	return FILETIMEtoPyObject(time);
 }
 
 auto Py_Everything_GetResultDateRecentlyChanged(DWORD index)
@@ -331,7 +320,7 @@ auto Py_Everything_GetResultDateRecentlyChanged(DWORD index)
 	FILETIME time;
 	auto ok = Everything_GetResultDateRecentlyChanged(index, &time);
 	checkEverythingErrorCodeAndThrow(ok);
-	return FILETIMEtoTime_Point(time);
+	return FILETIMEtoPyObject(time);
 }
 
 std::wstring Py_Everything_GetResultHighlightedFileName(DWORD index)
