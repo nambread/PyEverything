@@ -20,7 +20,7 @@ The packages are not yet on pypi. To download the latest version:
 
 If there is not a wheel for your version of python, you can run
 
-    pip install git+https://github.com/nambread/PyEverything@v0.3.2#egg=PyEverything
+    pip install git+https://github.com/nambread/PyEverything@v0.3.3#egg=PyEverything
 
 and the package will attempt to build from source. Ensure you have an MSVC compiler set up to match your version of python.
 For more information on that, [check out this page](https://wiki.python.org/moin/WindowsCompilers)
