@@ -12,24 +12,16 @@ PyEverything is exactly what the name suggests: Python bindings for the C functi
  3. Everything Service 1.4.1+ installed https://www.voidtools.com/
 
 ### Installation 
-The packages are not yet on pypi. To download the latest version:
 
- 1. Go to the releases section
- 2. Download the .whl for your version of python (3.7, 3.8, and 3.9 provided)
- 3. run `pip install path/to/your/wheel.whl`
+    pip install PyEverything
 
-If there is not a wheel for your version of python, you can run
-
-    pip install git+https://github.com/nambread/PyEverything@v0.3.3#egg=PyEverything
-
-and the package will attempt to build from source. Ensure you have an MSVC compiler set up to match your version of python.
-For more information on that, [check out this page](https://wiki.python.org/moin/WindowsCompilers)
+If your version of python is not officially supported, but you still wish to use it, follow the "Building from Source" instructions.
 
 ## Usage
 Basic API usages involves three main phases:
 1. Set up the query search state
 2. Submit the query
-3. Iterate over the resulting data
+3. Iterate over the resulting data via index
 ### example
 
     import PyEverything
@@ -41,7 +33,7 @@ Basic API usages involves three main phases:
         #results will get printed out here.
 
 The full Everything SDK is here:   [https://www.voidtools.com/support/everything/sdk/](https://www.voidtools.com/support/everything/sdk/)
-It is mostly a 1:1 translation, but there are some key differences between the python SDK and the C one.
+There are some key differences between the python SDK and the C one.
 
 ### Python Key Differences
 
@@ -70,6 +62,14 @@ In PyEverything, this will be a returned string:
     #Get the full path and file name of the first visible result.  
     result = PyEverything.GetResultFullPathName(0)
 
+Functions that return a date will return `None` if that data could not be queried. (Which might be the case with incomplete indexes of drives that are no longer available.)
+
+    GetResultDateAccessed()
+    GetResultDateCreated()
+    GetResultDateModified()
+    GetResultDateRecentlyChanged()
+    GetResultDateRun()
+
 #### Error Handling
 A large portion of the C API returns error codes, which the user must handle.
 For example, on [https://www.voidtools.com/support/everything/sdk/everything_getlasterror/](https://www.voidtools.com/support/everything/sdk/everything_getlasterror/)
@@ -93,8 +93,6 @@ In Python, this is instead a `RuntimeError`:
     RuntimeError: Everything API returned error code: 2
 The numerical value of the exception is the same as on the above GetLastError page.
 
-I would like to create specific PyEverything exceptions in future for easier exception handling.
-
 #### Namespaces
 C lacks namespaces, so all Everything SDK methods and variables have the "Everything_" prefix.
 the "PyEverything" package is already a namespace, so this prefix has been dropped everywhere that it appears. Keyboard switches are expensive, you shouldn't wear them out!
@@ -108,7 +106,7 @@ Building from source is done via python and setuptools. The extension module is 
  - Everything SDK (included in repo) : [https://www.voidtools.com/support/everything/sdk/](https://www.voidtools.com/support/everything/sdk/) 
  - Python 3.7 64 bit environment
  - wheel from pypi: `pip install wheel`
- - VS 2015 build tools or later (Dependent on Python version)
+ - VS 2015 build tools or later (Dependent on Python version. For more information on that, [check out this page](https://wiki.python.org/moin/WindowsCompilers)
 
 ### Instructions
 1. Clone this repo and initialise submodules:
