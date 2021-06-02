@@ -13,7 +13,11 @@ PyEverything is exactly what the name suggests: Python bindings for the C functi
 
 ### Installation 
 
-    pip install PyEverything
+    pip install git+https://github.com/nambread/PyEverything#egg=PyEverything
+
+This will pull the latest release. Add "@vx.x.x" after the url to pull a specific version. Eg:
+    
+    pip install git+https://github.com/nambread/PyEverything@v0.4.0#egg=PyEverything
 
 If your version of python is not officially supported, but you still wish to use it, follow the "Building from Source" instructions.
 
